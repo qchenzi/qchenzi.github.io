@@ -1,5 +1,22 @@
 # 在K8S上部署OceanBase的最佳实践
 
+## 目录
+- [1. 背景与选型](#1-背景与选型)
+  - [1.1 为什么选择OB](#11-为什么选择ob)
+  - [1.2 为什么选择ob-operator实现OB on K8S](#12-为什么选择ob-operator实现ob-on-k8s)
+- [2. 部署实操](#2-部署实操)
+  - [2.1 环境准备](#21-环境准备)
+  - [2.2 安装 ob-operator](#22-安装-ob-operator)
+  - [2.3 配置 OB 集群](#23-配置-ob-集群)
+  - [2.4 配置 OBProxy 集群](#24-配置-obproxy-集群)
+  - [2.5 Headless Service 和 CoreDNS 配置](#25-headless-service-和-coredns-配置)
+  - [2.6 监控与运维](#26-监控与运维)
+    - [2.6.1 Promethues部署](#261-promethues部署)
+    - [2.6.2 Grafana接入](#262-grafana接入)
+- [3. 部署中遇到的问题及解决方案](#3-部署中遇到的问题及解决方案)
+  - [3.1 ob-operator 的调度器问题](#31-ob-operator-的调度器默认为k8s原生的-default-scheduler而在我们环境中需要使用自定义的调度器)
+  - [3.2 网络配置问题](#32-网络配置问题)
+
 ## 1. 背景与选型
 
 OB（下称OB）是一款分布式关系型数据库，具有高性能、高可用性和弹性扩展等特点，其企业版已经在公司内部的"去Oracle"项目中进行了落地，并取得了不错的效果。此外，考虑到我们仍有许多业务在关系型数据库上有着需求，同时考虑到我们已经具备MySQL/MariaDB/MongoDB/PostgresSQL在公司内部的K8S集群上进行容器化部署经验，因此我们决定将OceanBase也进行容器化部署。
